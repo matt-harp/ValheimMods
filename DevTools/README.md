@@ -8,4 +8,5 @@ Tools. For devs. If you're not a person making mods or know what this is, you pr
 DevTools wraps your input in a class and method, compiles it, then uses reflection to invoke that method.  
 This means you will need to use `Console.instance.Print();` or something similar in your code to see any output.
 ### TODO
-- User defined usings (currently a static list)
+- User defined usings (currently a static list, should cover most cases though)
+-- To get around this, use the fully qualified type name
