@@ -1,6 +1,10 @@
 ﻿using System.CodeDom.Compiler;
 using Mono.CSharp;
 
+/*
+ * Taken from https://github.com/aeroson/mcs-ICodeCompiler
+ */
+
 namespace DevTools.CSharpCompiler
 {
 

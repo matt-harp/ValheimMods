@@ -5,6 +5,10 @@ using System.Reflection.Emit;
 using System.Text;
 using Mono.CSharp;
 
+/*
+ * Taken from https://github.com/aeroson/mcs-ICodeCompiler
+ */
+
 namespace DevTools.CSharpCompiler
 {
     //

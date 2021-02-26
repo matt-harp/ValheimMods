@@ -18,6 +18,10 @@ using System.IO;
 using System.Reflection.Emit;
 using Mono.CSharp;
 
+/*
+ * Taken from https://github.com/aeroson/mcs-ICodeCompiler
+ */
+
 namespace DevTools.CSharpCompiler
 {
     /// <summary>
