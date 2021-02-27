@@ -3,7 +3,8 @@
 Tools. For devs. If you're not a person making mods or know what this is, you probably shouldn't be using it.  
 This allows you to run your own C# code quickly and easily using a console command or quickly load your own assemblies through the console.
 ## How to use it?
-1. Install it (InSlimVML required)
+1. Install it ([InSlimVML](https://github.com/PJninja/InSlimVML/tree/main/InSlimVML) required) [[Link](https://www.nexusmods.com/valheim/mods/140?tab=files&file_id=455)]
+   - If using a source build, be sure to edit the references before building
 2. Use the console command `csrun` to run any block of C# code
 3. Use the `load [path]` command to load assemblies
 ### How does it work?
