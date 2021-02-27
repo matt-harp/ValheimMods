@@ -5,6 +5,9 @@ namespace ExampleMod
 {
     public class ExampleMod
     {
+        /*
+         * Entry point for InSlimVML to load our mod
+         */
         public static void Main()
         {
             new Thread(() =>
@@ -17,8 +20,10 @@ namespace ExampleMod
                     Thread.Sleep(100);
                 }
 
+                /*
+                 * Ready to print to console, run Harmony patches, etc
+                 */
                 Console.instance.Print("Good to go!");
-                Console.instance.Print("Good to go 2!");
             }).Start();
         }
     }
