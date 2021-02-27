@@ -48,9 +48,15 @@ namespace DevTools
                 }
 
                 Logger.Log("[DevTools] Applying patches...");
-                var harmony = new Harmony(nameof(DevTools));
-                harmony.PatchAll(Assembly.GetExecutingAssembly());
-
+                try
+                {
+                    var harmony = new Harmony(nameof(DevTools));
+                    harmony.PatchAll(Assembly.GetExecutingAssembly());
+                }
+                catch (Exception e)
+                {
+                    Logger.Error(e.Message);
+                }
                 Logger.Log("[DevTools] Loaded!");
             }).Start();
         }

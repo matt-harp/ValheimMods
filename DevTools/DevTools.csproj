@@ -2,8 +2,6 @@
 
     <PropertyGroup>
         <TargetFramework>net48</TargetFramework>
-        <RootNamespace>TestMod</RootNamespace>
-        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     </PropertyGroup>
 
     <ItemGroup>
