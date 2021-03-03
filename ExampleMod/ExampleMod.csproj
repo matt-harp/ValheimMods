@@ -4,10 +4,6 @@
         <TargetFramework>net48</TargetFramework>
     </PropertyGroup>
 
-    <PropertyGroup>
-        <PostBuildEvent>xcopy "$(OutputPath)$(MSBuildProjectName).dll" "A:\SteamLibrary\steamapps\common\Valheim\InSlimVML\Mods\" /syd</PostBuildEvent>
-    </PropertyGroup>
-
     <ItemGroup>
       <Reference Include="0Harmony, Version=2.0.4.0, Culture=neutral, PublicKeyToken=null">
         <HintPath>A:\SteamLibrary\steamapps\common\Valheim\InSlimVML\Mods\0Harmony.dll</HintPath>
