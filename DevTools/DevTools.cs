@@ -14,7 +14,6 @@ namespace DevTools
     public class DevTools
     {
         public static string LocalPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-        public static ScriptManager ScriptManager;
         public static ILogger Logger;
 
         public static void Main(string[] args)
