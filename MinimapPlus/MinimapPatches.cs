@@ -20,7 +20,7 @@ namespace MinimapPlus
     {
         static void Prefix()
         {
-            if (Player.m_localPlayer.GetStandingOnShip() != null)
+            if (Player.m_localPlayer.GetStandingOnShip() != null || Player.m_localPlayer.GetControlledShip() != null)
             {
                 Minimap.instance.m_exploreRadius = MinimapPlus.Config.BoatRange;
             }

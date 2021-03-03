@@ -197,9 +197,6 @@
         <Reference Include="UnityEngine.XRModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
             <HintPath>A:\SteamLibrary\steamapps\common\Valheim\valheim_Data\Managed\UnityEngine.XRModule.dll</HintPath>
         </Reference>
-        <Reference Include="Vale-UI-Library, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-            <HintPath>A:\SteamLibrary\steamapps\common\Valheim\InSlimVML\Mods\Vale-UI-Library.dll</HintPath>
-        </Reference>
     </ItemGroup>
 
     <ItemGroup>
