@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Linq;
 using System.Reflection;
 
 namespace MinimapPlus
@@ -11,10 +12,16 @@ namespace MinimapPlus
 
         public bool MapEnabled { get; set; } = true;
 
+        public bool MinimapEnabled { get; set; } = true;
+        
+        public bool MapShareEnabled { get; set; } = true;
+
+        public bool ShowPlayerMarkers { get; set; } = true;
+
         public static void SaveDefault(string path)
         {
             var settings = new MinimapSettings();
-            
+
             File.Create(path).Dispose();
             using (var sw = new StreamWriter(path))
             {
@@ -28,6 +35,7 @@ namespace MinimapPlus
         public static MinimapSettings ReadFile(string path)
         {
             var settings = new MinimapSettings();
+            var props = settings.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public).ToList();
             using (var sr = new StreamReader(path))
             {
                 string line;
@@ -35,9 +43,12 @@ namespace MinimapPlus
                 {
                     var keyvalue = line.Split('=');
                     if (keyvalue.Length != 2) continue;
-                    foreach (var prop in settings.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public))
+                    for (var i = props.Count - 1; i >= 0; i--)
                     {
+                        var prop = props[i];
+                        // Only assign matching property
                         if (prop.Name != keyvalue[0]) continue;
+                        props.RemoveAt(i);
                         if (prop.PropertyType == typeof(float))
                         {
                             prop.SetValue(settings, float.Parse(keyvalue[1]));
@@ -55,6 +66,17 @@ namespace MinimapPlus
                             prop.SetValue(settings, int.Parse(keyvalue[1]));
                         }
                     }
+                }
+            }
+
+            if (props.Count == 0) return settings;
+            
+            using (var sw = File.AppendText(path))
+            {
+                sw.Write("\n");
+                foreach (var prop in props)
+                {
+                    sw.WriteLine($"{prop.Name}={prop.GetValue(settings)}");
                 }
             }
 

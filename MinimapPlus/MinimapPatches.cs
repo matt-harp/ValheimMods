@@ -1,5 +1,6 @@
-﻿using System.Linq;
-using System.Reflection;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using HarmonyLib;
 using UnityEngine;
 
@@ -32,33 +33,92 @@ namespace MinimapPlus
 
         static void Postfix()
         {
+            if (!MinimapPlus.Config.MapShareEnabled) return;
             foreach (var pos in from playerInfo in ZNet.instance.GetPlayerList()
                 where playerInfo.m_characterID != Player.m_localPlayer.GetZDOID() && playerInfo.m_publicPosition
                 select playerInfo.m_position)
             {
                 var playerExploreRadius = MinimapPlus.Config.WalkingRange;
-                AccessTools.Method(typeof(Minimap), "Explore", new[] {typeof(Vector3), typeof(float)})
-                    .Invoke(Minimap.instance, new object[] {pos, playerExploreRadius});
+                MinimapReverse.Explore(Minimap.instance, pos, playerExploreRadius);
             }
         }
     }
 
-    [HarmonyPatch(typeof(Minimap), "Update")]
-    public class Minimap_Update
+    [HarmonyPatch(typeof(Minimap))]
+    public class MinimapReverse
     {
-        private static object MapMode_None = typeof(Minimap).GetNestedType("MapMode", BindingFlags.NonPublic)
-            .GetField("None").GetValue(Minimap.instance);
+        [HarmonyReversePatch]
+        [HarmonyPatch("Explore", typeof(Vector3), typeof(float))]
+        public static void Explore(object instance, Vector3 p, float radius)
+        {
+            throw new NotImplementedException("Stub!");
+        }
+        
+        [HarmonyReversePatch]
+        [HarmonyPatch("CenterMap", typeof(Vector3))]
+        public static void CenterMap(object instance, Vector3 center)
+        {
+            throw new NotImplementedException("Stub!");
+        }
+    }
 
-        private static MethodInfo SetMapMode = typeof(Minimap).GetMethod("SetMapMode",
-            BindingFlags.NonPublic | BindingFlags.Instance,
-            null, new[] {typeof(Minimap).GetNestedType("MapMode", BindingFlags.NonPublic)}, null);
-
+    [HarmonyPatch(typeof(Minimap), "UpdateMap")]
+    public class Minimap_UpdateMap
+    {
         static void Postfix()
         {
             if (!MinimapPlus.Config.MapEnabled)
             {
-                SetMapMode?.Invoke(Minimap.instance, new[] { MapMode_None });
+                Minimap.instance.m_largeRoot.SetActive(false);
             }
+
+            if (!MinimapPlus.Config.MinimapEnabled)
+            {
+                Minimap.instance.m_smallRoot.SetActive(false);
+            }
+
+            // var camRot = GameCamera.instance.transform.rotation;
+            // Minimap.instance.m_mapImageSmall.rectTransform.rotation = Quaternion.Euler(0, 0, camRot.eulerAngles.y);
+            // Minimap.instance.m_mapImageSmall.rectTransform.parent.GetComponent<Image>().enabled = false;
+            // Minimap.instance.m_mapImageSmall.rectTransform.GetComponent<RectMask2D>().enabled = false;
+        }
+    }
+    
+    [HarmonyPatch(typeof(Minimap), "SetMapMode")]
+    public class Minimap_SetMapMode
+    {
+        static void Prefix(Minimap __instance, ref string __state)
+        {
+            // ReSharper disable once RedundantAssignment
+            __state = Traverse.Create(__instance).Field("m_mode").GetValue<Enum>().ToString();
+        }
+        static void Postfix(Minimap __instance, ref string __state)
+        {
+            if (MinimapPlus.Config.ShowPlayerMarkers) return;
+            var traverse = Traverse.Create(__instance);
+            if (!__state.Equals(traverse.Field("m_mode").GetValue<Enum>().ToString()))
+            {
+                traverse.Field("m_mapOffset").SetValue(-Player.m_localPlayer.transform.position);
+            }
+        }
+    }
+    
+    [HarmonyPatch(typeof(Minimap), "Update")]
+    public class Minimap_Update
+    {
+        static void Postfix()
+        {
+            if (MinimapPlus.Config.ShowPlayerMarkers) return;
+            
+            // Disable all player location pins
+            Minimap.instance.m_largeMarker.gameObject.SetActive(false);
+            Minimap.instance.m_largeShipMarker.gameObject.SetActive(false);
+            Minimap.instance.m_smallMarker.gameObject.SetActive(false);
+            Minimap.instance.m_smallShipMarker.gameObject.SetActive(false);
+            var traverse = Traverse.Create(Minimap.instance);
+            traverse.Field("m_playerPins").GetValue<List<Minimap.PinData>>().ForEach(pin => Minimap.instance.RemovePin(pin));
+            traverse.Field("m_pingPins").GetValue<List<Minimap.PinData>>().ForEach(pin => Minimap.instance.RemovePin(pin));
+            traverse.Field("m_shoutPins").GetValue<List<Minimap.PinData>>().ForEach(pin => Minimap.instance.RemovePin(pin));
         }
     }
 }
