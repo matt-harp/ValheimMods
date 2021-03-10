@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Linq;
 using System.Reflection;
+using UnityEngine;
 
 namespace MinimapPlus
 {
@@ -17,6 +18,10 @@ namespace MinimapPlus
         public bool MapShareEnabled { get; set; } = true;
 
         public bool ShowPlayerMarkers { get; set; } = true;
+
+        public float WalkingWeatherMultiplier { get; set; } = 0.5f;
+        
+        public float BoatWeatherMultiplier { get; set; } = 0.4f;
 
         public static void SaveDefault(string path)
         {

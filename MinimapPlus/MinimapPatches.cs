@@ -21,13 +21,20 @@ namespace MinimapPlus
     {
         static void Prefix()
         {
+            var walkingMultiplier = 1f;
+            var boatMultiplier = 1f;
+            if (!EnvMan.instance.GetCurrentEnvironment().m_name.Contains("lear"))
+            {
+                boatMultiplier = MinimapPlus.Config.BoatWeatherMultiplier;
+                walkingMultiplier = MinimapPlus.Config.WalkingWeatherMultiplier;
+            }
             if (Player.m_localPlayer.GetStandingOnShip() != null || Player.m_localPlayer.GetControlledShip() != null)
             {
-                Minimap.instance.m_exploreRadius = MinimapPlus.Config.BoatRange;
+                Minimap.instance.m_exploreRadius = MinimapPlus.Config.BoatRange * boatMultiplier;
             }
             else
             {
-                Minimap.instance.m_exploreRadius = MinimapPlus.Config.WalkingRange;
+                Minimap.instance.m_exploreRadius = MinimapPlus.Config.WalkingRange * walkingMultiplier;
             }
         }
 
@@ -76,11 +83,6 @@ namespace MinimapPlus
             {
                 Minimap.instance.m_smallRoot.SetActive(false);
             }
-
-            // var camRot = GameCamera.instance.transform.rotation;
-            // Minimap.instance.m_mapImageSmall.rectTransform.rotation = Quaternion.Euler(0, 0, camRot.eulerAngles.y);
-            // Minimap.instance.m_mapImageSmall.rectTransform.parent.GetComponent<Image>().enabled = false;
-            // Minimap.instance.m_mapImageSmall.rectTransform.GetComponent<RectMask2D>().enabled = false;
         }
     }
     

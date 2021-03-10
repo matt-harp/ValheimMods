@@ -27,6 +27,8 @@ namespace MinimapPlus
                 Console.instance.Print("disablemapshare - disable map sharing");
                 Console.instance.Print("showplayermarkers - show player markers on map");
                 Console.instance.Print("hideplayermarkers - hide player markers on map");
+                Console.instance.Print("walkingweathermultiplier - visibility factor when the weather isn't clear");
+                Console.instance.Print("boatweathermultipler - visibility factor when the weather isn't clear");
                 Console.instance.Print("");
             }
             if (args[1].Equals("reload", StringComparison.InvariantCultureIgnoreCase))
@@ -87,6 +89,7 @@ namespace MinimapPlus
                 {
                     Console.instance.Print($"[Minimap+] Invalid argument: {args[2]}!");
                 }
+                return;
             }
             if (args[1].Equals("enablemapshare", StringComparison.InvariantCultureIgnoreCase))
             {
@@ -110,6 +113,32 @@ namespace MinimapPlus
             {
                 Console.instance.Print("[Minimap+] Player markers hidden!");
                 MinimapPlus.Config.ShowPlayerMarkers = false;
+                return;
+            }
+            if (args[1].Equals("walkingweathermultiplier", StringComparison.InvariantCultureIgnoreCase))
+            {
+                if (float.TryParse(args[2], out var result))
+                {
+                    Console.instance.Print($"[Minimap+] Walking weather multipler set to {result}!");
+                    MinimapPlus.Config.WalkingWeatherMultiplier = result;
+                }
+                else
+                {
+                    Console.instance.Print($"[Minimap+] Invalid argument: {args[2]}!");
+                }
+                return;
+            }
+            if (args[1].Equals("boatweathermultiplier", StringComparison.InvariantCultureIgnoreCase))
+            {
+                if (float.TryParse(args[2], out var result))
+                {
+                    Console.instance.Print($"[Minimap+] Boat weather multipler set to {result}!");
+                    MinimapPlus.Config.BoatWeatherMultiplier = result;
+                }
+                else
+                {
+                    Console.instance.Print($"[Minimap+] Invalid argument: {args[2]}!");
+                }
                 return;
             }
         }
