@@ -25,27 +25,27 @@ namespace MinimapPlus
             var boatMultiplier = 1f;
             if (!EnvMan.instance.GetCurrentEnvironment().m_name.Contains("lear"))
             {
-                boatMultiplier = MinimapPlus.Config.BoatWeatherMultiplier;
-                walkingMultiplier = MinimapPlus.Config.WalkingWeatherMultiplier;
+                boatMultiplier = MinimapPlus.MapConfig.BoatWeatherMultiplier;
+                walkingMultiplier = MinimapPlus.MapConfig.WalkingWeatherMultiplier;
             }
             if (Player.m_localPlayer.GetStandingOnShip() != null || Player.m_localPlayer.GetControlledShip() != null)
             {
-                Minimap.instance.m_exploreRadius = MinimapPlus.Config.BoatRange * boatMultiplier;
+                Minimap.instance.m_exploreRadius = MinimapPlus.MapConfig.BoatRange * boatMultiplier;
             }
             else
             {
-                Minimap.instance.m_exploreRadius = MinimapPlus.Config.WalkingRange * walkingMultiplier;
+                Minimap.instance.m_exploreRadius = MinimapPlus.MapConfig.WalkingRange * walkingMultiplier;
             }
         }
 
         static void Postfix()
         {
-            if (!MinimapPlus.Config.MapShareEnabled) return;
+            if (!MinimapPlus.MapConfig.MapShareEnabled) return;
             foreach (var pos in from playerInfo in ZNet.instance.GetPlayerList()
                 where playerInfo.m_characterID != Player.m_localPlayer.GetZDOID() && playerInfo.m_publicPosition
                 select playerInfo.m_position)
             {
-                var playerExploreRadius = MinimapPlus.Config.WalkingRange;
+                var playerExploreRadius = MinimapPlus.MapConfig.WalkingRange;
                 MinimapReverse.Explore(Minimap.instance, pos, playerExploreRadius);
             }
         }
@@ -74,12 +74,12 @@ namespace MinimapPlus
     {
         static void Postfix()
         {
-            if (!MinimapPlus.Config.MapEnabled)
+            if (!MinimapPlus.MapConfig.MapEnabled)
             {
                 Minimap.instance.m_largeRoot.SetActive(false);
             }
 
-            if (!MinimapPlus.Config.MinimapEnabled)
+            if (!MinimapPlus.MapConfig.MinimapEnabled)
             {
                 Minimap.instance.m_smallRoot.SetActive(false);
             }
@@ -96,7 +96,7 @@ namespace MinimapPlus
         }
         static void Postfix(Minimap __instance, ref string __state)
         {
-            if (MinimapPlus.Config.ShowPlayerMarkers) return;
+            if (MinimapPlus.MapConfig.ShowPlayerMarkers) return;
             var traverse = Traverse.Create(__instance);
             if (!__state.Equals(traverse.Field("m_mode").GetValue<Enum>().ToString()))
             {
@@ -110,7 +110,7 @@ namespace MinimapPlus
     {
         static void Postfix()
         {
-            if (MinimapPlus.Config.ShowPlayerMarkers) return;
+            if (MinimapPlus.MapConfig.ShowPlayerMarkers) return;
             
             // Disable all player location pins
             Minimap.instance.m_largeMarker.gameObject.SetActive(false);

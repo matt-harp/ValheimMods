@@ -2,47 +2,36 @@
 using System.IO;
 using System.Reflection;
 using System.Threading;
+using BepInEx;
 using HarmonyLib;
 
 namespace MinimapPlus
 {
-    public class MinimapPlus
+    [BepInPlugin("me.Night.valheim.MinimapPlus", "MinimapPlus", "2.0.0")]
+    public class MinimapPlus : BaseUnityPlugin
     {
-        public static MinimapSettings Config;
+        public static MinimapSettings MapConfig;
         public static string LocalPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
         public static string ConfigDir = Path.Combine(LocalPath, "config");
         public static string ConfigPath = Path.Combine(ConfigDir, "MinimapPlus.ini");
 
-        public static void Main()
-        {
-            new Thread(() =>
-            {
-                while (AccessTools.Method(typeof(Console), "Print") == null || Console.instance == null)
-                {
-                    Thread.Sleep(10);
-                }
-
-                Init();
-            }).Start();
-        }
-
-        public static void Init()
+        public void Start()
         {
             Directory.CreateDirectory(ConfigDir);
             if (!File.Exists(ConfigPath))
             {
-                Console.instance.Print("[Minimap+] Config not found. Creating...");
+                Logger.LogWarning("[Minimap+] MapConfig not found. Creating...");
                 MinimapSettings.SaveDefault(ConfigPath);
             }
-            Console.instance.Print("[Minimap+] Loading config...");
+            Logger.LogInfo("[Minimap+] Loading config...");
             LoadConfig();
-            Console.instance.Print("[Minimap+] Loaded!");
+            Logger.LogInfo("[Minimap+] Loaded!");
             new Harmony(nameof(MinimapPlus)).PatchAll(Assembly.GetExecutingAssembly());
         }
 
         public static void LoadConfig()
         {
-            Config = MinimapSettings.ReadFile(ConfigPath);
+            MapConfig = MinimapSettings.ReadFile(ConfigPath);
         }
     }
 }

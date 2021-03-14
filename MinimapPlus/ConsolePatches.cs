@@ -40,19 +40,19 @@ namespace MinimapPlus
             if (args[1].Equals("enablemap", StringComparison.InvariantCultureIgnoreCase))
             {
                 Console.instance.Print("[Minimap+] Map enabled!");
-                MinimapPlus.Config.MapEnabled = true;
+                MinimapPlus.MapConfig.MapEnabled = true;
                 return;
             }
             if (args[1].Equals("disablemap", StringComparison.InvariantCultureIgnoreCase))
             {
                 Console.instance.Print("[Minimap+] Map disabled!");
-                MinimapPlus.Config.MapEnabled = false;
+                MinimapPlus.MapConfig.MapEnabled = false;
                 return;
             }
             if (args[1].Equals("enableminimap", StringComparison.InvariantCultureIgnoreCase))
             {
                 Console.instance.Print("[Minimap+] Minimap enabled!");
-                MinimapPlus.Config.MinimapEnabled = true;
+                MinimapPlus.MapConfig.MinimapEnabled = true;
                 if (Minimap.instance != null)
                 {
                     Minimap.instance.m_smallRoot.SetActive(true);
@@ -62,7 +62,7 @@ namespace MinimapPlus
             if (args[1].Equals("disableminimap", StringComparison.InvariantCultureIgnoreCase))
             {
                 Console.instance.Print("[Minimap+] Minimap disabled!");
-                MinimapPlus.Config.MinimapEnabled = false;
+                MinimapPlus.MapConfig.MinimapEnabled = false;
                 return;
             }
             if (args[1].Equals("walkingrange", StringComparison.InvariantCultureIgnoreCase))
@@ -70,7 +70,7 @@ namespace MinimapPlus
                 if (float.TryParse(args[2], out var result))
                 {
                     Console.instance.Print($"[Minimap+] Walking range set to {result}!");
-                    MinimapPlus.Config.WalkingRange = result;
+                    MinimapPlus.MapConfig.WalkingRange = result;
                 }
                 else
                 {
@@ -83,7 +83,7 @@ namespace MinimapPlus
                 if (float.TryParse(args[2], out var result))
                 {
                     Console.instance.Print($"[Minimap+] Boat range set to {result}!");
-                    MinimapPlus.Config.BoatRange = result;
+                    MinimapPlus.MapConfig.BoatRange = result;
                 }
                 else
                 {
@@ -94,25 +94,25 @@ namespace MinimapPlus
             if (args[1].Equals("enablemapshare", StringComparison.InvariantCultureIgnoreCase))
             {
                 Console.instance.Print("[Minimap+] Map share enabled!");
-                MinimapPlus.Config.MapShareEnabled = false;
+                MinimapPlus.MapConfig.MapShareEnabled = false;
                 return;
             }
             if (args[1].Equals("disablemapshare", StringComparison.InvariantCultureIgnoreCase))
             {
                 Console.instance.Print("[Minimap+] Map share disabled!");
-                MinimapPlus.Config.MapShareEnabled = false;
+                MinimapPlus.MapConfig.MapShareEnabled = false;
                 return;
             }
             if (args[1].Equals("showplayermarkers", StringComparison.InvariantCultureIgnoreCase))
             {
                 Console.instance.Print("[Minimap+] Player markers shown!");
-                MinimapPlus.Config.ShowPlayerMarkers = true;
+                MinimapPlus.MapConfig.ShowPlayerMarkers = true;
                 return;
             }
             if (args[1].Equals("hideplayermarkers", StringComparison.InvariantCultureIgnoreCase))
             {
                 Console.instance.Print("[Minimap+] Player markers hidden!");
-                MinimapPlus.Config.ShowPlayerMarkers = false;
+                MinimapPlus.MapConfig.ShowPlayerMarkers = false;
                 return;
             }
             if (args[1].Equals("walkingweathermultiplier", StringComparison.InvariantCultureIgnoreCase))
@@ -120,7 +120,7 @@ namespace MinimapPlus
                 if (float.TryParse(args[2], out var result))
                 {
                     Console.instance.Print($"[Minimap+] Walking weather multipler set to {result}!");
-                    MinimapPlus.Config.WalkingWeatherMultiplier = result;
+                    MinimapPlus.MapConfig.WalkingWeatherMultiplier = result;
                 }
                 else
                 {
@@ -133,7 +133,7 @@ namespace MinimapPlus
                 if (float.TryParse(args[2], out var result))
                 {
                     Console.instance.Print($"[Minimap+] Boat weather multipler set to {result}!");
-                    MinimapPlus.Config.BoatWeatherMultiplier = result;
+                    MinimapPlus.MapConfig.BoatWeatherMultiplier = result;
                 }
                 else
                 {
