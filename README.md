@@ -3,4 +3,5 @@
 ###### Who would've thought?
 
 ### Installation
-#### Want to install one? All my mods rely on InSlimVML to be loaded, get it here: [InSlimVML](https://github.com/PJninja/InSlimVML)
+Want to install one? Grab it from its respective Nexus file or clone and build from source.
+I use InSlimVML and BepInEx interchangeably, so please make sure you are using the correct loader for the mod version.
