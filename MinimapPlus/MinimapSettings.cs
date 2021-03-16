@@ -23,6 +23,9 @@ namespace MinimapPlus
         
         public float BoatWeatherMultiplier { get; set; } = 0.4f;
 
+        public bool ExploringSkillEnabled { get; set; } = false;
+        public float ExploringSkillRate { get; set; } = 0.05f;
+
         public static void SaveDefault(string path)
         {
             var settings = new MinimapSettings();

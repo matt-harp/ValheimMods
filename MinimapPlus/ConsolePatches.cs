@@ -29,6 +29,7 @@ namespace MinimapPlus
                 Console.instance.Print("hideplayermarkers - hide player markers on map");
                 Console.instance.Print("walkingweathermultiplier - visibility factor when the weather isn't clear");
                 Console.instance.Print("boatweathermultipler - visibility factor when the weather isn't clear");
+                Console.instance.Print("exploringskillrate - rate at which you gain XP for the Exploring skill (if enabled) Recommended: less than .05");
                 Console.instance.Print("");
             }
             if (args[1].Equals("reload", StringComparison.InvariantCultureIgnoreCase))
@@ -134,6 +135,24 @@ namespace MinimapPlus
                 {
                     Console.instance.Print($"[Minimap+] Boat weather multipler set to {result}!");
                     MinimapPlus.MapConfig.BoatWeatherMultiplier = result;
+                }
+                else
+                {
+                    Console.instance.Print($"[Minimap+] Invalid argument: {args[2]}!");
+                }
+                return;
+            }
+            if (args[1].Equals("exploringskillrate", StringComparison.InvariantCultureIgnoreCase))
+            {
+                if (!MinimapPlus.MapConfig.ExploringSkillEnabled)
+                {
+                    Console.instance.Print("[Minimap+] Please enable the Exploring skill and restart the game.");
+                    return;
+                }
+                if (float.TryParse(args[2], out var result))
+                {
+                    Console.instance.Print($"[Minimap+] Exploring skill rate set to {result}!");
+                    MinimapPlus.MapConfig.ExploringSkillRate = result;
                 }
                 else
                 {

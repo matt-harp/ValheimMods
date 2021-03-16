@@ -21,20 +21,26 @@ namespace MinimapPlus
     {
         static void Prefix()
         {
+            if (Player.m_localPlayer == null) return;
+            var skillFactor = 1f;
+            if (MinimapPlus.MapConfig.ExploringSkillEnabled)
+            {
+                skillFactor = Player.m_localPlayer.GetSkillFactor((Skills.SkillType) MinimapPlus.SkillId);
+            }
             var walkingMultiplier = 1f;
             var boatMultiplier = 1f;
             if (!EnvMan.instance.GetCurrentEnvironment().m_name.Contains("lear"))
             {
-                boatMultiplier = MinimapPlus.MapConfig.BoatWeatherMultiplier;
                 walkingMultiplier = MinimapPlus.MapConfig.WalkingWeatherMultiplier;
+                boatMultiplier = MinimapPlus.MapConfig.BoatWeatherMultiplier;
             }
             if (Player.m_localPlayer.GetStandingOnShip() != null || Player.m_localPlayer.GetControlledShip() != null)
             {
-                Minimap.instance.m_exploreRadius = MinimapPlus.MapConfig.BoatRange * boatMultiplier;
+                Minimap.instance.m_exploreRadius = ((MinimapPlus.MapConfig.BoatRange - 100) * skillFactor + 100) * boatMultiplier;
             }
             else
             {
-                Minimap.instance.m_exploreRadius = MinimapPlus.MapConfig.WalkingRange * walkingMultiplier;
+                Minimap.instance.m_exploreRadius = ((MinimapPlus.MapConfig.WalkingRange - 100) * skillFactor + 100) * walkingMultiplier;
             }
         }
 
@@ -121,6 +127,33 @@ namespace MinimapPlus
             traverse.Field("m_playerPins").GetValue<List<Minimap.PinData>>().ForEach(pin => Minimap.instance.RemovePin(pin));
             traverse.Field("m_pingPins").GetValue<List<Minimap.PinData>>().ForEach(pin => Minimap.instance.RemovePin(pin));
             traverse.Field("m_shoutPins").GetValue<List<Minimap.PinData>>().ForEach(pin => Minimap.instance.RemovePin(pin));
+        }
+    }
+
+    [HarmonyPatch(typeof(Minimap), "ExploreAll")]
+    public class Minimap_ExploreAll
+    {
+        static void Prefix()
+        {
+            MinimapPlus.LegitimateExploration = false;
+        }
+
+        static void Postfix()
+        {
+            MinimapPlus.LegitimateExploration = true;
+        }
+    }
+    
+    [HarmonyPatch(typeof(Minimap), "Explore", typeof(int), typeof(int))]
+    public class Minimap_Explore
+    {
+        static void Postfix(bool __result)
+        {
+            if (__result && MinimapPlus.LegitimateExploration && Player.m_localPlayer != null && MinimapPlus.MapConfig.ExploringSkillEnabled)
+            {
+                var player = Player.m_localPlayer;
+                player.RaiseSkill((Skills.SkillType)MinimapPlus.SkillId, MinimapPlus.MapConfig.ExploringSkillRate);
+            }
         }
     }
 }
